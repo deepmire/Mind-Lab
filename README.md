@@ -1,8 +1,25 @@
-# 心智实验室（Container Mind Lab）
+# 心智实验室（Mind Lab）
+
+[![GitHub Pages](https://img.shields.io/badge/GitHub%20Pages-在线访问-2563eb)](https://deepmire.github.io/Mind-Lab/)
+[![React](https://img.shields.io/badge/React-19-087ea4)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-strict-3178c6)](https://www.typescriptlang.org/)
+[![Vite](https://img.shields.io/badge/Vite-7-646cff)](https://vite.dev/)
 
 一个面向零基础学习者的中文可视化学习应用，用「意图 → 机制 → 权衡」的顺序讲透 **Docker、Kubernetes、Agent、RAG、Linux 与计算机网络**。
 
 它不是命令速查表，而是把每项技术拆成可播放的机制、完整的状态变化、可复现的示例和可观察的证据。学习目标是：读完一个模块后，你能解释它为什么存在、内部如何变化、输出应该是什么、如何验证与排障，只剩亲手实操。
+
+## 在线访问
+
+- **学习网站**：<https://deepmire.github.io/Mind-Lab/>
+- **GitHub 仓库**：<https://github.com/deepmire/Mind-Lab>
+
+无需安装即可学习。项目已接入 GitHub Pages：每次推送到 `main` 分支，GitHub Actions 会自动安装依赖、执行严格类型检查与生产构建，并发布最新版本。也可以在仓库的 **Actions** 页面手动触发 **Deploy static content to Pages**。
+
+网站使用 hash 路由，因此可以直接分享某个主题或模块地址，例如：
+
+- <https://deepmire.github.io/Mind-Lab/#network>
+- <https://deepmire.github.io/Mind-Lab/#module/network-routing>
 
 ## 当前内容
 
@@ -31,7 +48,9 @@
 
 所有代表路径都包含状态表。遇到「不懂就会看错机制」的术语，会在第一次真正使用时展开；需要独立理解的依赖会进入完整模块，而不是只给一句术语解释。
 
-## 快速开始
+## 本地运行
+
+如果只需要阅读和学习，直接使用上方的在线网站即可。以下步骤用于本地开发或修改课程内容。
 
 ### 环境要求
 
@@ -48,13 +67,13 @@ npm ci
 npm run dev
 ```
 
-然后打开：
+然后打开 Vite 输出的本地地址，默认是：
 
 ```text
-http://127.0.0.1:8080
+http://127.0.0.1:5173
 ```
 
-开发服务器由 [vite.config.ts](vite.config.ts) 固定为 `127.0.0.1:8080`。如果端口被占用，可以临时指定其他端口：
+如果端口被占用，可以临时指定其他端口：
 
 ```bash
 npm run dev -- --port 4185
@@ -68,7 +87,17 @@ npm run preview
 ```
 
 - `npm run build`：先运行 TypeScript 严格检查，再生成 `dist/`。
-- `npm run preview`：预览生产构建，默认地址仍为 `http://127.0.0.1:4183`。
+- `npm run preview`：预览生产构建，默认地址是 `http://127.0.0.1:4173`。
+
+### GitHub Pages 部署
+
+生产部署由 [.github/workflows/deploy.yml](.github/workflows/deploy.yml) 自动完成：
+
+1. 推送代码到 `main` 分支；
+2. Actions 使用 Node.js 22 执行 `npm ci` 与 `npm run build`；
+3. 将 `dist/` 上传并发布到 GitHub Pages。
+
+Vite 的 `base` 已在 [vite.config.ts](vite.config.ts) 中配置为 `/Mind-Lab/`，与当前仓库名和 Pages 项目路径保持一致。若以后修改仓库名或绑定自定义域名，需要同步调整该配置。
 
 当前应用是纯前端项目，不需要后端、数据库或外部 API 即可学习。Kubernetes、RAG 与计算机网络示例使用确定性的离线模拟，不会连接或修改真实集群、模型、文档服务或网络设备；Linux 与网络真实命令只在读者自己的对应环境中执行，并会明确标注适用平台。
 
@@ -118,7 +147,8 @@ npm run preview
 ## 项目结构
 
 ```text
-container-mind-lab/
+Mind-Lab/
+├─ .github/workflows/deploy.yml       # GitHub Pages 自动构建与部署
 ├─ index.html                         # HTML 入口与中文页面元数据
 ├─ package.json                       # 依赖与 npm 脚本
 ├─ vite.config.ts                     # 开发/预览服务器配置
